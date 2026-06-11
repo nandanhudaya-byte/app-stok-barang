@@ -72,7 +72,10 @@ useEffect(() => {
         <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">
           📦 App Stok Barang
         </h1>
-        <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+  <span style={{ color: 'gray', fontSize: '14px' }}>
+    👤 {session.user.email}
+  </span>
   <button onClick={() => supabase.auth.signOut()}>
     Logout
   </button>
