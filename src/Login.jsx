@@ -20,32 +20,41 @@ function Login() {
   }
 
   return (
-    <div style={{ maxWidth: '400px', margin: '100px auto', textAlign: 'center' }}>
-      <h2>{isRegister ? 'Register' : 'Login'}</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
-      />
-      <button onClick={handleSubmit} style={{ padding: '8px 20px' }}>
-        {isRegister ? 'Daftar' : 'Masuk'}
-      </button>
-      <p style={{ marginTop: '10px', color: 'red' }}>{pesan}</p>
-      <p
-        onClick={() => setIsRegister(!isRegister)}
-        style={{ cursor: 'pointer', color: 'blue', marginTop: '10px' }}
-      >
-        {isRegister ? 'Sudah punya akun? Login' : 'Belum punya akun? Register'}
-      </p>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+          {isRegister ? '📝 Register' : '🔐 Login'}
+        </h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <button
+          onClick={handleSubmit}
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          {isRegister ? 'Daftar' : 'Masuk'}
+        </button>
+        {pesan && (
+          <p className="mt-4 text-center text-red-500 text-sm">{pesan}</p>
+        )}
+        <p
+          onClick={() => setIsRegister(!isRegister)}
+          className="mt-4 text-center text-blue-500 text-sm cursor-pointer hover:underline"
+        >
+          {isRegister ? 'Sudah punya akun? Login' : 'Belum punya akun? Register'}
+        </p>
+      </div>
     </div>
   )
 }
