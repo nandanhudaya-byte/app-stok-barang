@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react'
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from './supabaseClient'
+import Login from './Login'
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-)
 
 function App() {
+  const [session, setSession] = useState(null)
   const [barang, setBarang] = useState([])
   const [nama, setNama] = useState('')
   const [harga, setHarga] = useState('')
@@ -16,9 +14,20 @@ function App() {
   const [editHarga, setEditHarga] = useState('')
   const [editStok, setEditStok] = useState('')
 
-  useEffect(() => {
+useEffect(() => {
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    setSession(session)
+  })
+  supabase.auth.onAuthStateChange((_event, session) => {
+    setSession(session)
+  })
+}, [])
+useEffect(() => {
     fetchBarang()
   }, [])
+  
+  if (!session) return <Login />
+  
 
   async function fetchBarang() {
     const { data } = await supabase.from('barang').select('*')
@@ -63,6 +72,11 @@ function App() {
         <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">
           📦 App Stok Barang
         </h1>
+        <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+  <button onClick={() => supabase.auth.signOut()}>
+    Logout
+  </button>
+</div>
 
         <div className="bg-white rounded-xl shadow p-6 mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-700">Tambah Barang</h2>
