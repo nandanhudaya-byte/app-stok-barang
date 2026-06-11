@@ -27,7 +27,7 @@ function App() {
 
   async function tambahBarang() {
     if (!nama || !harga || !stok) return
-    await supabase.from('barang').insert([{ nama, harga, stok }])
+    await supabase.from('barang').insert([{ nama, harga, stock: stok }])
     setNama('')
     setHarga('')
     setStok('')
@@ -57,43 +57,71 @@ function App() {
   }
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-      <h1>📦 App Stok Barang</h1>
+    <div className="min-h-screen bg-gray-100">
+      <div className="max-w-2xl mx-auto py-10 px-4">
 
-      <div style={{ border: '1px solid #ccc', padding: '20px', marginBottom: '20px' }}>
-        <h2>Tambah Barang</h2>
-        <input placeholder="Nama barang" value={nama} onChange={e => setNama(e.target.value)} style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }} />
-        <input placeholder="Harga" value={harga} onChange={e => setHarga(e.target.value)} style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }} />
-        <input placeholder="Stok" value={stok} onChange={e => setStok(e.target.value)} style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }} />
-        <button onClick={tambahBarang} style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px' }}>Tambah Barang</button>
-      </div>
+        <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">
+          📦 App Stok Barang
+        </h1>
 
-      <h2>Daftar Barang</h2>
-      {barang.map(item => (
-        <div key={item.id} style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '10px' }}>
-          {editId === item.id ? (
-            <div>
-              <input value={editNama} onChange={e => setEditNama(e.target.value)} style={{ display: 'block', width: '100%', marginBottom: '8px', padding: '6px' }} />
-              <input value={editHarga} onChange={e => setEditHarga(e.target.value)} style={{ display: 'block', width: '100%', marginBottom: '8px', padding: '6px' }} />
-              <input value={editStok} onChange={e => setEditStok(e.target.value)} style={{ display: 'block', width: '100%', marginBottom: '8px', padding: '6px' }} />
-              <button onClick={simpanEdit} style={{ backgroundColor: 'blue', color: 'white', padding: '8px 16px', marginRight: '8px' }}>Simpan</button>
-              <button onClick={() => setEditId(null)} style={{ backgroundColor: 'gray', color: 'white', padding: '8px 16px' }}>Batal</button>
-            </div>
-          ) : (
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <strong>{item.nama}</strong>
-                <p>Harga: Rp {item.harga}</p>
-                <p>Stok: {item.stock}</p>
-              </div>
-              <div>
-                <button onClick={() => mulaiEdit(item)} style={{ backgroundColor: 'orange', color: 'white', padding: '8px 16px', marginRight: '8px' }}>Edit</button>
-                <button onClick={() => hapusBarang(item.id)} style={{ backgroundColor: 'red', color: 'white', padding: '8px 16px' }}>Hapus</button>
-              </div>
-            </div>
-          )}
+        <div className="bg-white rounded-xl shadow p-6 mb-8">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Tambah Barang</h2>
+          <input
+            placeholder="Nama barang"
+            value={nama}
+            onChange={e => setNama(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <input
+            placeholder="Harga"
+            value={harga}
+            onChange={e => setHarga(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <input
+            placeholder="Stok"
+            value={stok}
+            onChange={e => setStok(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <button
+            onClick={tambahBarang}
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition"
+          >
+            Tambah Barang
+          </button>
         </div>
-      ))}
+
+        <h2 className="text-xl font-semibold mb-4 text-gray-700">Daftar Barang</h2>
+
+        {barang.map(item => (
+          <div key={item.id} className="bg-white rounded-xl shadow p-5 mb-4">
+            {editId === item.id ? (
+              <div>
+                <input value={editNama} onChange={e => setEditNama(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                <input value={editHarga} onChange={e => setEditHarga(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                <input value={editStok} onChange={e => setEditStok(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                <div className="flex gap-2">
+                  <button onClick={simpanEdit} className="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-4 py-2 rounded-lg transition">Simpan</button>
+                  <button onClick={() => setEditId(null)} className="bg-gray-400 hover:bg-gray-500 text-white font-semibold px-4 py-2 rounded-lg transition">Batal</button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-lg font-semibold text-gray-800">{item.nama}</p>
+                  <p className="text-gray-500">Harga: Rp {Number(item.harga).toLocaleString('id-ID')}</p>
+                  <p className="text-gray-500">Stok: {item.stock}</p>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={() => mulaiEdit(item)} className="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-4 py-2 rounded-lg transition">Edit</button>
+                  <button onClick={() => hapusBarang(item.id)} className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition">Hapus</button>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
